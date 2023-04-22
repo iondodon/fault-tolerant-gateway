@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+    gateway:
+        build: ./gateway
+        container_name: pbl-gateway
+        # depends_on: [cache-master]
+        tty: true
+        volumes: 
+            - ./gateway:/gateway
+        restart: always
+        ports:
+            - 7171:7171
