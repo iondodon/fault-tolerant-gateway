@@ -10,3 +10,14 @@ services:
         restart: always
         ports:
             - 7171:7171
+
+    client-service:
+        build: ./client-service
+        container_name: pbl-client-service
+        depends_on: [gateway]
+        tty: true
+        volumes: 
+            - ./client-service:/client-service
+        restart: always
+        ports:
+            - 8080:8080

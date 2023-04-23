@@ -18,6 +18,7 @@ defmodule Gateway.Router do
             "/orders-service" <> rest -> rest
             "/menus-service" <> rest -> rest
             "/reports-service" <> rest -> rest
+            "/client-service" <> rest -> rest
         end
     end
 
@@ -52,7 +53,9 @@ defmodule Gateway.Router do
     match "/menus-service/*_rest", do: handle_requests(conn, "menus-service")
     match "/reports-service/*_rest", do: handle_requests(conn, "reports-service")
     match "/orders-service/*_rest", do: handle_requests(conn, "orders-service")
+    match "/client-service/*_rest", do: handle_requests(conn, "client-service")
 
     match _, do: send_resp(conn, 404, "404. not found!")
+
     defp handle_errors(conn, err), do: send_resp(conn, 500, err.reason.message)
 end

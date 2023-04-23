@@ -12,6 +12,7 @@ defmodule Service.CircuitBreaker do
             service_address = LoadBalancer.next(service)
             url = @scheme <> service_address <> path
 
+
             case HttpClient.request(method, url, body, headers) do
                 {:ok, response} ->
                     {:ok, response}
