@@ -16,7 +16,6 @@ defmodule Service.CircuitBreaker do
 
             case HttpClient.request(method, url, body, headers) do
                 {:ok, response} ->
-                    IO.inspect("Response #{response}")
                     {:ok, response}
                 {:error, err} ->
                     update_service_state(service, service_address)
