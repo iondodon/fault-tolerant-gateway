@@ -3,28 +3,28 @@ services:
     gateway:
         build: ./gateway
         container_name: gateway
-        # depends_on: [cache-master]
         tty: true
-        volumes: 
-            - ./gateway:/gateway
         restart: always
         ports:
             - 7171:7171
-        # networks:
-        #     - gateway-network
 
-    client-service:
+    client-service-replica1:
         build: ./client-service
-        container_name: client-service
+        container_name: client-service-replica1
         depends_on: [gateway]
         tty: true
-        volumes: 
-            - ./client-service:/client-service
         restart: always
-        ports:
-            - 1234:1234
-        # networks:
-        #     - gateway-network
+        environment:
+            - SERVICE_NAME=client-service
+            - ADDRESS=client-service-replica1
 
-# networks:
-#     gateway-network:
+    client-service-replica2:
+        build: ./client-service
+        container_name: client-service-replica2
+        depends_on: [gateway]
+        tty: true
+        restart: always
+        environment:
+            - SERVICE_NAME=client-service
+            - ADDRESS=client-service-replica2
+

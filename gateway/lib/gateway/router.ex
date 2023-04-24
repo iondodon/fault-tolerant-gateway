@@ -3,6 +3,7 @@ defmodule Gateway.Router do
     use Plug.ErrorHandler
     alias Service.CircuitBreaker
     alias Gateway.Cache.ECache
+    require Logger
 
     plug(:match)
     plug(
@@ -15,9 +16,6 @@ defmodule Gateway.Router do
 
     defp rest_path(full_path) do
         case full_path do
-            "/orders-service" <> rest -> rest
-            "/menus-service" <> rest -> rest
-            "/reports-service" <> rest -> rest
             "/client-service" <> rest -> rest
         end
     end
@@ -46,13 +44,11 @@ defmodule Gateway.Router do
     post "/register" do
         address = conn.body_params["address"]
         service = conn.body_params["service"]
+        Logger.info("Registering #{service} with address #{address} in srevice registry")
         ECache.command("LPUSH #{service} #{address}")
         send_resp(conn, 200, service <> " " <> address <> " registed")
     end
 
-    match "/menus-service/*_rest", do: handle_requests(conn, "menus-service")
-    match "/reports-service/*_rest", do: handle_requests(conn, "reports-service")
-    match "/orders-service/*_rest", do: handle_requests(conn, "orders-service")
     match "/client-service/*_rest", do: handle_requests(conn, "client-service")
 
     match _, do: send_resp(conn, 404, "404. not found!")

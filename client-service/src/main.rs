@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use warp::Filter;
 use reqwest::Client;
+use std::env;
 
 #[derive(Serialize, Deserialize)]
 struct RegisterRequest {
@@ -32,12 +33,21 @@ async fn hello() -> Result<impl warp::Reply, warp::Rejection> {
 
 #[tokio::main]
 async fn main() {
-    let client = Client::new();
-    let registry_url = "http://gateway:7171".to_string();
-    let name: String = "client-service".to_string();
-    let address: String = "client-service:1234".to_string();
+    let service_name = match env::var("SERVICE_NAME") {
+        Ok(value) => value,
+        Err(_e) => panic!("Could not get SERVICE_NAME"),
+    };
+    let address = match env::var("ADDRESS") {
+        Ok(value) => value,
+        Err(_e) => panic!("Could not get ADDRESS"),
+    };
 
-    register_service(client.clone(), registry_url, name, address).await;
+    let client = Client::new();
+
+    let registry_url = "http://gateway:7171".to_string();
+    let address = format!("{address}:1234").to_string();
+
+    register_service(client.clone(), registry_url, service_name, address).await;
 
     let hello_route = warp::path!("hello").and_then(hello);
 
