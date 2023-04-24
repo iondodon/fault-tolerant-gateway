@@ -53,5 +53,5 @@ defmodule Gateway.Router do
 
     match _, do: send_resp(conn, 404, "404. not found!")
 
-    defp handle_errors(conn, err), do: send_resp(conn, 500, err.reason.message)
+    defp handle_errors(conn, err), do: send_resp(conn, 500, err.reason)
 end
