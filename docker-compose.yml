@@ -2,7 +2,7 @@ version: '3.8'
 services:
     gateway:
         build: ./gateway
-        container_name: pbl-gateway
+        container_name: gateway
         # depends_on: [cache-master]
         tty: true
         volumes: 
@@ -10,14 +10,21 @@ services:
         restart: always
         ports:
             - 7171:7171
+        # networks:
+        #     - gateway-network
 
     client-service:
         build: ./client-service
-        container_name: pbl-client-service
+        container_name: client-service
         depends_on: [gateway]
         tty: true
         volumes: 
             - ./client-service:/client-service
         restart: always
         ports:
-            - 8080:8080
+            - 1234:1234
+        # networks:
+        #     - gateway-network
+
+# networks:
+#     gateway-network:

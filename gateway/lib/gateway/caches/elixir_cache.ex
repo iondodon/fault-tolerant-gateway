@@ -4,9 +4,10 @@ defmodule Gateway.Cache.ECache do
 
     @recv_data_length 0
 
+    # ip from docker network inspect cause requires this tuple and cannot user hostname
     @ip Application.get_env(:gateway, :elixir_cache_host, {172, 17, 0, 1})
     @port Application.get_env(:gateway, :elixir_cache_port, 6666)
-    
+
     def start_link(_args) do
        GenServer.start_link(__MODULE__, :nil, name: Gateway.Cache.ECache)
     end
@@ -21,19 +22,19 @@ defmodule Gateway.Cache.ECache do
 
     def init(_args) do
         case :gen_tcp.connect(@ip, @port, [:binary, active: false]) do
-            {:ok, socket} -> 
+            {:ok, socket} ->
                 Logger.info("Connected to elixir cache")
                 {:ok, socket}
-            {:error, _reason} -> 
+            {:error, _reason} ->
                 Logger.info("Not able to connect to elixir cache")
                 :ignore
         end
     end
 
     def handle_call({:command, command}, _from, socket) do
-        response = with :gen_tcp.send(socket, command <> "\n"), 
+        response = with :gen_tcp.send(socket, command <> "\n"),
                     do: :gen_tcp.recv(socket, @recv_data_length)
-        
+
         case response do
             {:error, reason} ->
                 {:stop, Kernel.inspect(reason), Kernel.inspect(reason), socket}
@@ -54,8 +55,8 @@ defmodule Gateway.Cache.ECache do
             "(function) " <> value -> value
             "(list) " <> values ->
                 values = String.split(values)
-                Enum.reduce(values, [], fn value, list -> 
-                    list ++ [value] 
+                Enum.reduce(values, [], fn value, list ->
+                    list ++ [value]
                 end)
             "(tuple) " <> tuple -> tuple
             "(idunno) " <> _rest -> "idunno"

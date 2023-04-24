@@ -1,4 +1,4 @@
-FROM elixir:1.14.4
+FROM elixir:1.14.4-alpine
 
 COPY ./ /gateway
 WORKDIR /gateway

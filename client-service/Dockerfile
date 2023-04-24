@@ -5,4 +5,4 @@ WORKDIR /client-service
 
 CMD cargo run
 
-EXPOSE 8080
+EXPOSE 1234

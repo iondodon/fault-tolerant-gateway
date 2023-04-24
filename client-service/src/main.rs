@@ -35,13 +35,13 @@ async fn main() {
     let client = Client::new();
     let registry_url = "http://gateway:7171".to_string();
     let name: String = "client-service".to_string();
-    let address: String = "client-service:8080".to_string();
+    let address: String = "client-service:1234".to_string();
 
     register_service(client.clone(), registry_url, name, address).await;
 
     let hello_route = warp::path!("hello").and_then(hello);
 
-    warp::serve(hello_route).run(([127, 0, 0, 1], 8080)).await;
+    warp::serve(hello_route).run(([0, 0, 0, 0], 1234)).await;
 }
 
 
