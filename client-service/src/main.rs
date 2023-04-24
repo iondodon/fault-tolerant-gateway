@@ -13,6 +13,8 @@ async fn register_service(client: Client, registry_url: String, service: String,
     let register_url = format!("{}/register", registry_url);
     let register_request = RegisterRequest { service, address };
 
+    println!("Sending request to register this service replica to Service Registry");
+
     match client.post(&register_url).json(&register_request).send().await {
         Ok(response) => {
             if response.status().is_success() {
@@ -28,7 +30,14 @@ async fn register_service(client: Client, registry_url: String, service: String,
 }
 
 async fn hello() -> Result<impl warp::Reply, warp::Rejection> {
-    Ok("Hello from Rust web service!")
+    let address = match env::var("ADDRESS") {
+        Ok(value) => value,
+        Err(_e) => panic!("Could not get ADDRESS"),
+    };
+
+    println!("New request in replica {}", address);
+
+    Ok(format!("Hello from Rust web service - {address}"))
 }
 
 #[tokio::main]
