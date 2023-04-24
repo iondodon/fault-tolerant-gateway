@@ -1,7 +1,6 @@
 defmodule Service.CircuitBreaker do
     alias Gateway.HttpClient
     alias Gateway.Cache.ECache
-    require Logget
 
     @scheme "http://"
     @failures_limit Application.get_env(:gateway, :failures_limit, 3)
@@ -13,7 +12,7 @@ defmodule Service.CircuitBreaker do
             service_address = LoadBalancer.next(service)
             url = @scheme <> service_address <> path
 
-            Logger.info("Regirecting call to #{url}")
+            IO.inspect("Regirecting call to #{url}")
 
             case HttpClient.request(method, url, body, headers) do
                 {:ok, response} ->
