@@ -2,4 +2,4 @@
 
 Fault tolerant gateway that works as a circuit breaker and a load balancer
 
-<video src='demo-gateway.mp4'/>
+<video src='https://github.com/iondodon/fault-tolerant-gateway/blob/main/demo-gateway.mp4'/>
