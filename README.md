@@ -2,6 +2,8 @@
 
 This project introduces a fault-tolerant gateway that functions as both a circuit breaker and a load balancer. It employs the [resilient-scalable-cache](https://github.com/iondodon/resilient-scalable-cache) as a key-value database.
 
+### Watch the demo
+
 [![Watch the demo](https://img.youtube.com/vi/Rmgy0CgyuOo/maxresdefault.jpg)](https://youtu.be/Rmgy0CgyuOo)
 
 The gateway is developed using the Elixir programming language, which inherently provides fault tolerance. Elixir allows developers to create applications that can automatically restart upon encountering errors, without losing their state and continuing to operate as if nothing happened. This resilience is due to Elixir's actor-based architecture.
